@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lrm.hospital.mapper.ScheduleMapper">
+  <resultMap id="BaseResultMap" type="com.lrm.hospital.model.Schedule">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="doctor_id" jdbcType="VARCHAR" property="doctorId" />
+    <result column="schedule_date" jdbcType="DATE" property="scheduleDate" />
+    <result column="total_quota" jdbcType="INTEGER" property="totalQuota" />
+    <result column="current_quota" jdbcType="INTEGER" property="currentQuota" />
+    <result column="current_number" jdbcType="INTEGER" property="currentNumber" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, doctor_id, schedule_date, total_quota, current_quota, current_number
+  </sql>
+  <select id="selectByExample" parameterType="com.lrm.hospital.model.ScheduleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from schedule
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lrm.hospital.model.ScheduleExample">
+    delete from schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lrm.hospital.model.Schedule">
+    insert into schedule (id, doctor_id, schedule_date, 
+      total_quota, current_quota, current_number
+      )
+    values (#{id,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{scheduleDate,jdbcType=DATE}, 
+      #{totalQuota,jdbcType=INTEGER}, #{currentQuota,jdbcType=INTEGER}, #{currentNumber,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lrm.hospital.model.Schedule">
+    insert into schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="doctorId != null">
+        doctor_id,
+      </if>
+      <if test="scheduleDate != null">
+        schedule_date,
+      </if>
+      <if test="totalQuota != null">
+        total_quota,
+      </if>
+      <if test="currentQuota != null">
+        current_quota,
+      </if>
+      <if test="currentNumber != null">
+        current_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null">
+        #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleDate != null">
+        #{scheduleDate,jdbcType=DATE},
+      </if>
+      <if test="totalQuota != null">
+        #{totalQuota,jdbcType=INTEGER},
+      </if>
+      <if test="currentQuota != null">
+        #{currentQuota,jdbcType=INTEGER},
+      </if>
+      <if test="currentNumber != null">
+        #{currentNumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lrm.hospital.model.ScheduleExample" resultType="java.lang.Long">
+    select count(*) from schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update schedule
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doctorId != null">
+        doctor_id = #{record.doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scheduleDate != null">
+        schedule_date = #{record.scheduleDate,jdbcType=DATE},
+      </if>
+      <if test="record.totalQuota != null">
+        total_quota = #{record.totalQuota,jdbcType=INTEGER},
+      </if>
+      <if test="record.currentQuota != null">
+        current_quota = #{record.currentQuota,jdbcType=INTEGER},
+      </if>
+      <if test="record.currentNumber != null">
+        current_number = #{record.currentNumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update schedule
+    set id = #{record.id,jdbcType=VARCHAR},
+      doctor_id = #{record.doctorId,jdbcType=VARCHAR},
+      schedule_date = #{record.scheduleDate,jdbcType=DATE},
+      total_quota = #{record.totalQuota,jdbcType=INTEGER},
+      current_quota = #{record.currentQuota,jdbcType=INTEGER},
+      current_number = #{record.currentNumber,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lrm.hospital.model.Schedule">
+    update schedule
+    <set>
+      <if test="doctorId != null">
+        doctor_id = #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleDate != null">
+        schedule_date = #{scheduleDate,jdbcType=DATE},
+      </if>
+      <if test="totalQuota != null">
+        total_quota = #{totalQuota,jdbcType=INTEGER},
+      </if>
+      <if test="currentQuota != null">
+        current_quota = #{currentQuota,jdbcType=INTEGER},
+      </if>
+      <if test="currentNumber != null">
+        current_number = #{currentNumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lrm.hospital.model.Schedule">
+    update schedule
+    set doctor_id = #{doctorId,jdbcType=VARCHAR},
+      schedule_date = #{scheduleDate,jdbcType=DATE},
+      total_quota = #{totalQuota,jdbcType=INTEGER},
+      current_quota = #{currentQuota,jdbcType=INTEGER},
+      current_number = #{currentNumber,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,28 @@
+server:
+  port: 10005
+  servlet:
+    context-path: /hospital
+spring:
+  devtools:
+    restart:
+      enabled: true
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      maxFileSize: 5MB  #单位必须大写MB或不写(即为B)
+      maxRequestSize: 10MB
+#datasource
+hospital:
+  driverClassName: com.mysql.cj.jdbc.Driver
+  url: jdbc:MySQL://47.111.22.60:3306/hospital?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+  username: root
+  password: Macong5200
+  #连接池
+  initialSize: 5
+  minIdle: 5
+  maxActive: 20
+  filters: stat
