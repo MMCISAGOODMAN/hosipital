@@ -1,12 +1,15 @@
 package com.lrm.hospital.service.impl;
 
 import com.lrm.hospital.config.GlobalVariable;
+import com.lrm.hospital.dto.EditPasswordDto;
 import com.lrm.hospital.dto.LoginDto;
 import com.lrm.hospital.dto.LoginResult;
+import com.lrm.hospital.exception.HospitalException;
 import com.lrm.hospital.mapper.UserMapper;
 import com.lrm.hospital.model.User;
 import com.lrm.hospital.model.UserExample;
 import com.lrm.hospital.service.UserService;
+import com.lrm.hospital.utils.IdUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +56,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout(String token) {
         globalVariable.tokenMap.remove(token);
+    }
+
+    @Override
+    public void register(User user) {
+        user.setId(IdUtil.getStringId());
+        userMapper.insert(user);
+    }
+
+    @Override
+    public void edit(User user) {
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public void editPassword(EditPasswordDto editPasswordDto) {
+        String userId = editPasswordDto.getUserId();
+        String oldPassword = editPasswordDto.getOldPassword();
+        String newPassword = editPasswordDto.getNewPassword();
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (!oldPassword.equals(user.getPassword())) {
+            throw new HospitalException(100, "旧密码错误！");
+        }
+        user.setPassword(newPassword);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }

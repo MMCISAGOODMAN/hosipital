@@ -86,7 +86,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from schedule
     where id = #{id,jdbcType=VARCHAR}
@@ -102,10 +102,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lrm.hospital.model.Schedule">
-    insert into schedule (id, doctor_id, schedule_date, 
+    insert into schedule (id, doctor_id, schedule_date,
       total_quota, current_quota, current_number
       )
-    values (#{id,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{scheduleDate,jdbcType=DATE}, 
+    values (#{id,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{scheduleDate,jdbcType=DATE},
       #{totalQuota,jdbcType=INTEGER}, #{currentQuota,jdbcType=INTEGER}, #{currentNumber,jdbcType=INTEGER}
       )
   </insert>
@@ -226,4 +226,15 @@
       current_number = #{currentNumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="getIdleDoctorList" resultType="com.lrm.hospital.dto.IdleDoctorDto">
+    select u.id as user_id,s.id as schedule_id,u.username,s.schedule_date,s.total_quota,s.current_quota from schedule s
+    left join user u on s.doctor_id=u.id
+    <where>
+      u.type='1' and s.schedule_date &gt;=now()
+      <if test="username != null and username != ''">
+        and u.username like concat ('%',#{username,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+  </select>
 </mapper>

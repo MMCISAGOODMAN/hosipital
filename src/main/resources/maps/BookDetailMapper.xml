@@ -7,6 +7,7 @@
     <result column="schedule_id" jdbcType="VARCHAR" property="scheduleId" />
     <result column="schedule_number" jdbcType="INTEGER" property="scheduleNumber" />
     <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, schedule_id, schedule_number, status
+    id, user_id, schedule_id, schedule_number, status, result
   </sql>
   <select id="selectByExample" parameterType="com.lrm.hospital.model.BookDetailExample" resultMap="BaseResultMap">
     select
@@ -85,7 +86,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from book_detail
     where id = #{id,jdbcType=VARCHAR}
@@ -101,10 +102,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lrm.hospital.model.BookDetail">
-    insert into book_detail (id, user_id, schedule_id, 
-      schedule_number, status)
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{scheduleId,jdbcType=VARCHAR}, 
-      #{scheduleNumber,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR})
+    insert into book_detail (id, user_id, schedule_id,
+      schedule_number, status, result
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{scheduleId,jdbcType=VARCHAR},
+      #{scheduleNumber,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lrm.hospital.model.BookDetail">
     insert into book_detail
@@ -124,6 +127,9 @@
       <if test="status != null">
         status,
       </if>
+      <if test="result != null">
+        result,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -140,6 +146,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -167,6 +176,9 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
+      <if test="record.result != null">
+        result = #{record.result,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -175,10 +187,11 @@
   <update id="updateByExample" parameterType="map">
     update book_detail
     set id = #{record.id,jdbcType=VARCHAR},
-      user_id = #{record.userId,jdbcType=VARCHAR},
-      schedule_id = #{record.scheduleId,jdbcType=VARCHAR},
-      schedule_number = #{record.scheduleNumber,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=VARCHAR}
+    user_id = #{record.userId,jdbcType=VARCHAR},
+    schedule_id = #{record.scheduleId,jdbcType=VARCHAR},
+    schedule_number = #{record.scheduleNumber,jdbcType=INTEGER},
+    status = #{record.status,jdbcType=VARCHAR},
+    result = #{record.result,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -198,6 +211,9 @@
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -206,7 +222,41 @@
     set user_id = #{userId,jdbcType=VARCHAR},
       schedule_id = #{scheduleId,jdbcType=VARCHAR},
       schedule_number = #{scheduleNumber,jdbcType=INTEGER},
-      status = #{status,jdbcType=VARCHAR}
+      status = #{status,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="getMyBookList" resultType="com.lrm.hospital.dto.MyBookDto">
+    select b.id as bookdetail_id,u.username,s.schedule_date,b.schedule_number,
+     s.current_number from book_detail b
+    left join schedule s on b.schedule_id=s.id
+    left join user u on s.doctor_id=u.id
+    <where>
+      <if test="username !=null and username!=''">
+      and u.username like concat ('%',#{username},'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="getBookList" resultType="com.lrm.hospital.dto.BookListDto">
+    select b.id,u.username,u.telphone,b.schedule_number from book_detail b
+    left join user u on b.user_id= u.id
+    <where>
+      <if test="username !=null and username!=''">
+        and u.username like concat ('%',#{username},'%')
+      </if>
+      <if test="telphone !=null and telphone!=''">
+        and u.telphone like concat ('%',#{telphone},'%')
+      </if>
+      <if test="status !=null and status!=''">
+        and b.status = #{status}
+      </if>
+    </where>
+  </select>
+  <select id="getBookDetail" resultType="com.lrm.hospital.dto.BookDetailDto">
+    select b.id,u.username,u.telphone,u.id_cart,b.status ,b.result from book_detail b
+    left join  user u  on b.user_id=u.id
+    where b.id =#{id}
+  </select>
 </mapper>

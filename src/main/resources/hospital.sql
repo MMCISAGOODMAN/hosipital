@@ -31,6 +31,7 @@ create table book_detail
    schedule_id          varchar(20)      comment '排班ID',
    schedule_number      int              comment '预约号',
    status               varchar(2)       comment '状态 1-待就诊 2-已就诊',
+   result               varchar(2000)    comment '诊断结果',
    primary key (id)
 );
 alter table book_detail comment '预约记录';

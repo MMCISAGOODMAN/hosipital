@@ -11,6 +11,8 @@ public class BookDetail {
 
     private String status;
 
+    private String result;
+
     public String getId() {
         return id;
     }
@@ -49,5 +51,13 @@ public class BookDetail {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result == null ? null : result.trim();
     }
 }

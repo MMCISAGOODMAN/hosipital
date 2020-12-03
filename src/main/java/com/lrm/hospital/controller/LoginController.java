@@ -1,7 +1,10 @@
 package com.lrm.hospital.controller;
 
+import com.lrm.hospital.dto.EditPasswordDto;
 import com.lrm.hospital.dto.LoginDto;
 import com.lrm.hospital.dto.LoginResult;
+import com.lrm.hospital.exception.HospitalException;
+import com.lrm.hospital.model.User;
 import com.lrm.hospital.service.UserService;
 import com.lrm.hospital.utils.Result;
 import io.swagger.annotations.Api;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
  * @author: mamingcong
  * @date: 2020/12/1 9:38
  */
-@Api(tags = "登录")
+@Api(tags = "用户中心")
 @RestController
 public class LoginController {
 
@@ -41,7 +44,33 @@ public class LoginController {
     @GetMapping("/logout")
     @ApiOperation(value = "退出")
     public Result logout(@RequestHeader("token") String token) {
-         userServiceImpl.logout(token);
+        userServiceImpl.logout(token);
+        return Result.ok().setData(new ArrayList<>());
+    }
+
+    @PostMapping("/register")
+    @ApiOperation(value = "用户注册")
+    public Result register(@RequestBody User user) {
+        userServiceImpl.register(user);
+        return Result.ok().setData(new ArrayList<>());
+    }
+
+    @PostMapping("/edit")
+    @ApiOperation(value = "编辑用户")
+    public Result edit(@RequestBody User user) {
+        userServiceImpl.edit(user);
+        return Result.ok().setData(new ArrayList<>());
+    }
+
+    @GetMapping("/editPassword")
+    @ApiOperation(value = "修改密码")
+    public Result editPassword(@RequestBody EditPasswordDto editPasswordDto) {
+
+        try {
+            userServiceImpl.editPassword(editPasswordDto);
+        } catch (HospitalException hospitalException) {
+            return Result.failure(100, hospitalException.getMessage());
+        }
         return Result.ok().setData(new ArrayList<>());
     }
 }

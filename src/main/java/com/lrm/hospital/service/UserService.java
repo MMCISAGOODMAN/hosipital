@@ -1,5 +1,6 @@
 package com.lrm.hospital.service;
 
+import com.lrm.hospital.dto.EditPasswordDto;
 import com.lrm.hospital.dto.LoginDto;
 import com.lrm.hospital.dto.LoginResult;
 import com.lrm.hospital.model.User;
@@ -16,4 +17,10 @@ public interface UserService {
     LoginResult login(LoginDto loginDto);
 
     void logout(String token);
+
+    void register(User user);
+
+    void edit(User user);
+
+    void editPassword(EditPasswordDto editPasswordDto);
 }
