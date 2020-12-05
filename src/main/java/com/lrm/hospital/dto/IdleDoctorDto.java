@@ -22,4 +22,6 @@ public class IdleDoctorDto {
     private int totalQuota;
     private int currentQuota;
 
+    private String state;
+
 }

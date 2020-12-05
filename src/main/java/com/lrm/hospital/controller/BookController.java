@@ -31,9 +31,9 @@ public class BookController {
 
     @GetMapping("/getIdleDoctorList")
     @ApiOperation(value = "查询可预约医生列表")
-    public Result getIdleDoctorList(@RequestParam(name = "username") @ApiParam(value = "医生名字") String username) {
+    public Result getIdleDoctorList(@RequestParam(name = "username") @ApiParam(value = "医生名字") String username,@RequestHeader("token") String token) {
 
-        return Result.ok().setData(bookServiceImpl.getIdleDoctorList(username));
+        return Result.ok().setData(bookServiceImpl.getIdleDoctorList(username,token));
     }
 
 

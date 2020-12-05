@@ -24,4 +24,6 @@ public class MyBookDto {
     private int scheduleNumber;
 
     private int currentNumber;
+
+    private String state;
 }

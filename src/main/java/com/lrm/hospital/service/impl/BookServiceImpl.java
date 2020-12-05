@@ -1,5 +1,6 @@
 package com.lrm.hospital.service.impl;
 
+import com.lrm.hospital.config.GlobalVariable;
 import com.lrm.hospital.dto.BookDetailDto;
 import com.lrm.hospital.dto.BookListDto;
 import com.lrm.hospital.dto.IdleDoctorDto;
@@ -11,6 +12,7 @@ import com.lrm.hospital.mapper.ScheduleMapper;
 import com.lrm.hospital.model.BookDetail;
 import com.lrm.hospital.model.BookDetailExample;
 import com.lrm.hospital.model.Schedule;
+import com.lrm.hospital.model.User;
 import com.lrm.hospital.service.BookService;
 import com.lrm.hospital.utils.IdUtil;
 import org.springframework.stereotype.Service;
@@ -36,11 +38,14 @@ public class BookServiceImpl implements BookService {
     @Resource
     private ScheduleMapper scheduleMapper;
 
+    @Resource
+    private GlobalVariable globalVariable;
+
 
     @Override
-    public List<IdleDoctorDto> getIdleDoctorList(String username) {
-
-        return scheduleMapper.getIdleDoctorList(username);
+    public List<IdleDoctorDto> getIdleDoctorList(String username,String token) {
+        User user = globalVariable.tokenMap.get(token);
+        return scheduleMapper.getIdleDoctorList(username,user.getId());
     }
 
 

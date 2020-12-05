@@ -29,5 +29,5 @@ public interface ScheduleMapper {
 
     int updateByPrimaryKey(Schedule record);
 
-    List<IdleDoctorDto> getIdleDoctorList(String username);
+    List<IdleDoctorDto> getIdleDoctorList(String username,String userId);
 }

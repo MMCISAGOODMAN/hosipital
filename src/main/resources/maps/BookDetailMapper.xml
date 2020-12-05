@@ -229,7 +229,7 @@
 
   <select id="getMyBookList" resultType="com.lrm.hospital.dto.MyBookDto">
     select b.id as bookdetail_id,u.username,s.schedule_date,b.schedule_number,
-     s.current_number from book_detail b
+     s.current_number,b.state from book_detail b
     left join schedule s on b.schedule_id=s.id
     left join user u on s.doctor_id=u.id
     <where>

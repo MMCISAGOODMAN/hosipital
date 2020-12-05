@@ -17,7 +17,7 @@ import java.util.List;
  * @date: 2020/12/3 23:16
  */
 public interface BookService {
-    List<IdleDoctorDto> getIdleDoctorList(String username);
+    List<IdleDoctorDto> getIdleDoctorList(String username,String token);
 
     void book(BookDetail bookDetail);
 
