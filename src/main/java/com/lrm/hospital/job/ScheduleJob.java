@@ -35,7 +35,8 @@ public class ScheduleJob {
 
     //每周一生成本周的预约
     @Scheduled(cron = "0 0 0 ? * MON")
-    private void configureTasks() {
+    //@Scheduled(cron = "0 0/1 * * * ?")
+    public void configureTasks() {
         List<Date> next7Days = getNext7Days();
         UserExample example = new UserExample();
         example.createCriteria().andTypeEqualTo(UserType.DOCTOR.getCode());
@@ -52,7 +53,6 @@ public class ScheduleJob {
                 }
             }
         }
-
     }
 
 

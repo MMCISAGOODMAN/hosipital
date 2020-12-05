@@ -62,7 +62,7 @@ public class LoginController {
         return Result.ok().setData(new ArrayList<>());
     }
 
-    @GetMapping("/editPassword")
+    @PostMapping("/editPassword")
     @ApiOperation(value = "修改密码")
     public Result editPassword(@RequestBody EditPasswordDto editPasswordDto) {
 

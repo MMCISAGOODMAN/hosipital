@@ -9,11 +9,11 @@ public class Schedule {
 
     private Date scheduleDate;
 
-    private Integer totalQuota;
+    private int totalQuota;
 
-    private Integer currentQuota;
+    private int currentQuota;
 
-    private Integer currentNumber;
+    private int currentNumber;
 
     public String getId() {
         return id;
