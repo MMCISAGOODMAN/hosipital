@@ -15,6 +15,7 @@ public class BookListDto {
 
     private String id;
     private String username;
+    private String doctorName;
     private String telphone;
     private int scheduleNumber;
 }

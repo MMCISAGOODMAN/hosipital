@@ -240,11 +240,13 @@
   </select>
 
   <select id="getBookList" resultType="com.lrm.hospital.dto.BookListDto">
-    select b.id,u.username,u.telphone,b.schedule_number from book_detail b
+    select b.id,uu.username as doctor_name,u.username,u.telphone,b.schedule_number from book_detail b
     left join user u on b.user_id= u.id
+    left join schedule s on b.schedule_id=s.id
+    left join user uu on s.doctor_id=uu.id
     <where>
       <if test="username !=null and username!=''">
-        and u.username like concat ('%',#{username},'%')
+        and uu.username like concat ('%',#{username},'%')
       </if>
       <if test="telphone !=null and telphone!=''">
         and u.telphone like concat ('%',#{telphone},'%')
