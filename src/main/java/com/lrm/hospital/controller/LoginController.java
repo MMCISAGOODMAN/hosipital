@@ -3,6 +3,7 @@ package com.lrm.hospital.controller;
 import com.lrm.hospital.dto.EditPasswordDto;
 import com.lrm.hospital.dto.LoginDto;
 import com.lrm.hospital.dto.LoginResult;
+import com.lrm.hospital.dto.RetrievePasswordDto;
 import com.lrm.hospital.exception.HospitalException;
 import com.lrm.hospital.model.User;
 import com.lrm.hospital.service.UserService;
@@ -72,5 +73,17 @@ public class LoginController {
             return Result.failure(100, hospitalException.getMessage());
         }
         return Result.ok().setData(new ArrayList<>());
+    }
+
+    @PostMapping("/retrievePassword")
+    @ApiOperation(value = "找回密码")
+    public Result retrievePassword(@RequestBody RetrievePasswordDto retrievePasswordDto) {
+        User user = null;
+        try {
+            user = userServiceImpl.retrievePassword(retrievePasswordDto);
+        } catch (HospitalException hospitalException) {
+            return Result.failure(100, hospitalException.getMessage());
+        }
+        return Result.ok().setData(user.getPassword());
     }
 }

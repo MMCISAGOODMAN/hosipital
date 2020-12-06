@@ -4,6 +4,7 @@ import com.lrm.hospital.config.GlobalVariable;
 import com.lrm.hospital.dto.EditPasswordDto;
 import com.lrm.hospital.dto.LoginDto;
 import com.lrm.hospital.dto.LoginResult;
+import com.lrm.hospital.dto.RetrievePasswordDto;
 import com.lrm.hospital.exception.HospitalException;
 import com.lrm.hospital.mapper.UserMapper;
 import com.lrm.hospital.model.User;
@@ -12,6 +13,7 @@ import com.lrm.hospital.service.UserService;
 import com.lrm.hospital.utils.IdUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -80,5 +82,19 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(newPassword);
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public User retrievePassword(RetrievePasswordDto retrievePasswordDto) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUsernameEqualTo(retrievePasswordDto.getUserName());
+        criteria.andTelphoneEqualTo(retrievePasswordDto.getMobile());
+        List<User> userList = userMapper.selectByExample(userExample);
+        if(CollectionUtils.isEmpty(userList)){
+            throw new HospitalException(100, "无当前用户！");
+        }else{
+            return userList.get(0);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.lrm.hospital.service;
 import com.lrm.hospital.dto.EditPasswordDto;
 import com.lrm.hospital.dto.LoginDto;
 import com.lrm.hospital.dto.LoginResult;
+import com.lrm.hospital.dto.RetrievePasswordDto;
 import com.lrm.hospital.model.User;
 
 /**
@@ -23,4 +24,6 @@ public interface UserService {
     void edit(User user);
 
     void editPassword(EditPasswordDto editPasswordDto);
+
+    User retrievePassword(RetrievePasswordDto retrievePasswordDto);
 }
