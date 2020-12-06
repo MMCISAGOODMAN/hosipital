@@ -25,5 +25,5 @@ public class MyBookDto {
 
     private int currentNumber;
 
-    private String state;
+    private String status;
 }
