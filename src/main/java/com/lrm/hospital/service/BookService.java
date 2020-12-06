@@ -23,7 +23,7 @@ public interface BookService {
 
     void cancelBook(String bookId);
 
-    List<MyBookDto> getMyBookList(String username);
+    List<MyBookDto> getMyBookList(String username,String token);
 
     List<BookListDto> getBookList(String username, String telphone, String status);
 

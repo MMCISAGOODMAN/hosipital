@@ -110,9 +110,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<MyBookDto> getMyBookList(String username) {
-
-        return bookDetailMapper.getMyBookList(username);
+    public List<MyBookDto> getMyBookList(String username, String token) {
+        User user = globalVariable.tokenMap.get(token);
+        if (user == null) {
+            return Collections.emptyList();
+        }
+        return bookDetailMapper.getMyBookList(username, user.getId());
     }
 
     @Override

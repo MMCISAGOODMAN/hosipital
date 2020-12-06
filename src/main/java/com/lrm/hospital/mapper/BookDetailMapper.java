@@ -33,7 +33,7 @@ public interface BookDetailMapper {
 
     int updateByPrimaryKey(BookDetail record);
 
-    List<MyBookDto> getMyBookList(String username);
+    List<MyBookDto> getMyBookList(String username,String userId);
 
     List<BookListDto> getBookList(@Param("username")String username, @Param("telphone")String telphone, @Param("status")String status);
 

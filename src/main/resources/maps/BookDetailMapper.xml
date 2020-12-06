@@ -236,6 +236,9 @@
       <if test="username !=null and username!=''">
       and u.username like concat ('%',#{username},'%')
       </if>
+      <if test="userId !=null and userId!=''">
+        and b.user_id =#{userId}
+      </if>
     </where>
   </select>
 

@@ -58,9 +58,10 @@ public class BookController {
 
     @GetMapping("/getMyBookList")
     @ApiOperation(value = "查询我的预约")
-    public Result getMyBookList(@RequestParam(name = "username") @ApiParam(value = "医生姓名") String username) {
+    public Result getMyBookList(@RequestParam(name = "username") @ApiParam(value = "医生姓名") String username,
+                                @RequestHeader("token") String token) {
 
-        return Result.ok().setData(bookServiceImpl.getMyBookList(username));
+        return Result.ok().setData(bookServiceImpl.getMyBookList(username,token));
     }
 
     @GetMapping("/getBookList")
