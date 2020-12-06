@@ -139,8 +139,8 @@ public class BookServiceImpl implements BookService {
         Schedule schedule = scheduleMapper.selectByPrimaryKey(scheduleId);
         schedule.setCurrentNumber(schedule.getCurrentNumber() + 1);
         scheduleMapper.updateByPrimaryKey(schedule);
-
-        bookDetail.setStatus(BookDetailStatus.HAS.getCode());
-        bookDetailMapper.updateByPrimaryKeySelective(bookDetail);
+        bookDetail1.setResult(bookDetail.getResult());
+        bookDetail1.setStatus(BookDetailStatus.HAS.getCode());
+        bookDetailMapper.updateByPrimaryKeySelective(bookDetail1);
     }
 }

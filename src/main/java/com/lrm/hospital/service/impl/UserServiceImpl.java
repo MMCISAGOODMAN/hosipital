@@ -5,6 +5,7 @@ import com.lrm.hospital.dto.EditPasswordDto;
 import com.lrm.hospital.dto.LoginDto;
 import com.lrm.hospital.dto.LoginResult;
 import com.lrm.hospital.dto.RetrievePasswordDto;
+import com.lrm.hospital.enums.UserType;
 import com.lrm.hospital.exception.HospitalException;
 import com.lrm.hospital.mapper.UserMapper;
 import com.lrm.hospital.model.User;
@@ -63,6 +64,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(User user) {
         user.setId(IdUtil.getStringId());
+        if(user.getType()==null || "".equals(user.getType())){
+            user.setType(UserType.NORMAL.getCode());
+        }
         userMapper.insert(user);
     }
 
