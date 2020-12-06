@@ -18,6 +18,7 @@ import com.lrm.hospital.utils.IdUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,9 +44,27 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public List<IdleDoctorDto> getIdleDoctorList(String username,String token) {
+    public List<IdleDoctorDto> getIdleDoctorList(String username, String token) {
         User user = globalVariable.tokenMap.get(token);
-        return scheduleMapper.getIdleDoctorList(username,user.getId());
+        String loginUserId = user.getId();
+        //查询当前登录人是否已经预约过此条记录
+        List<IdleDoctorDto> idleDoctorList = scheduleMapper.getIdleDoctorList(username);
+        if (idleDoctorList.size() == 0) {
+            return Collections.emptyList();
+        }
+        BookDetailExample example = null;
+        String scheduleId = null;
+        for (IdleDoctorDto idleDoctorDto : idleDoctorList) {
+            scheduleId = idleDoctorDto.getScheduleId();
+            example = new BookDetailExample();
+            example.createCriteria().andScheduleIdEqualTo(scheduleId).andUserIdEqualTo(loginUserId);
+            if (bookDetailMapper.countByExample(example) > 0) {
+                idleDoctorDto.setState("已预约");
+            } else {
+                idleDoctorDto.setState("未预约");
+            }
+        }
+        return idleDoctorList;
     }
 
 
