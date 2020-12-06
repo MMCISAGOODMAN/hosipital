@@ -104,7 +104,7 @@ public class BookServiceImpl implements BookService {
 
         String scheduleId = bookDetail.getScheduleId();
         Schedule schedule = scheduleMapper.selectByPrimaryKey(scheduleId);
-        schedule.setCurrentQuota(schedule.getTotalQuota() - 1);
+        schedule.setCurrentQuota(schedule.getCurrentQuota() - 1);
         scheduleMapper.updateByPrimaryKey(schedule);
         bookDetailMapper.deleteByPrimaryKey(bookId);
     }
