@@ -48,7 +48,7 @@ public class ScheduleJob {
                 for (Date next7Day : next7Days) {
                     example2 = new ScheduleExample();
                     example2.createCriteria().andScheduleDateEqualTo(next7Day).andDoctorIdEqualTo(doctor.getId());
-                    if (scheduleMapper.countByExample(example2) < 0) {
+                    if (scheduleMapper.countByExample(example2) == 0) {
                         Schedule schedule = new Schedule();
                         schedule.setId(IdUtil.getStringId());
                         schedule.setDoctorId(doctor.getId());
