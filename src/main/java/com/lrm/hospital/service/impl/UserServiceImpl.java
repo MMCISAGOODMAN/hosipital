@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void edit(User user) {
-        userMapper.updateByPrimaryKey(user);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override
