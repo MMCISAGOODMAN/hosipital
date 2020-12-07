@@ -52,14 +52,22 @@ public class LoginController {
     @PostMapping("/register")
     @ApiOperation(value = "用户注册")
     public Result register(@RequestBody User user) {
-        userServiceImpl.register(user);
+        try {
+            userServiceImpl.register(user);
+        } catch (HospitalException e) {
+            Result.failure(100, e.getMessage());
+        }
         return Result.ok().setData(new ArrayList<>());
     }
 
     @PostMapping("/edit")
     @ApiOperation(value = "编辑用户")
     public Result edit(@RequestBody User user) {
-        userServiceImpl.edit(user);
+        try {
+            userServiceImpl.edit(user);
+        } catch (HospitalException e) {
+            Result.failure(100, e.getMessage());
+        }
         return Result.ok().setData(new ArrayList<>());
     }
 
@@ -81,8 +89,8 @@ public class LoginController {
         User user = null;
         try {
             user = userServiceImpl.retrievePassword(retrievePasswordDto);
-        } catch (HospitalException hospitalException) {
-            return Result.failure(100, hospitalException.getMessage());
+        } catch (HospitalException e) {
+            return Result.failure(100, e.getMessage());
         }
         return Result.ok().setData(user.getPassword());
     }
