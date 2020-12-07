@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void edit(User user) {
         UserExample example = new UserExample();
-        example.createCriteria().andUsernameEqualTo(user.getUsername());
+        example.createCriteria().andUsernameEqualTo(user.getUsername()).andIdNotEqualTo(user.getId());
         if (userMapper.countByExample(example) < 0) {
             userMapper.updateByPrimaryKeySelective(user);
         }
