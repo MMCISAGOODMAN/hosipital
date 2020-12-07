@@ -30,4 +30,6 @@ public interface ScheduleMapper {
     int updateByPrimaryKey(Schedule record);
 
     List<IdleDoctorDto> getIdleDoctorList(String username);
+
+    Schedule selectLastOne();
 }

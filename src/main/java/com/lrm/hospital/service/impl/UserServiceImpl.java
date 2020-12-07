@@ -7,16 +7,20 @@ import com.lrm.hospital.dto.LoginResult;
 import com.lrm.hospital.dto.RetrievePasswordDto;
 import com.lrm.hospital.enums.UserType;
 import com.lrm.hospital.exception.HospitalException;
+import com.lrm.hospital.mapper.ScheduleMapper;
 import com.lrm.hospital.mapper.UserMapper;
+import com.lrm.hospital.model.Schedule;
 import com.lrm.hospital.model.User;
 import com.lrm.hospital.model.UserExample;
 import com.lrm.hospital.service.UserService;
+import com.lrm.hospital.utils.DateUtils;
 import com.lrm.hospital.utils.IdUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +40,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private GlobalVariable globalVariable;
+
+    @Resource
+    private ScheduleMapper scheduleMapper;
 
     @Override
     public LoginResult login(LoginDto loginDto) {
@@ -64,15 +71,36 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(User user) {
         user.setId(IdUtil.getStringId());
-        if(user.getType()==null || "".equals(user.getType())){
+        if (user.getType() == null || "".equals(user.getType())) {
             user.setType(UserType.NORMAL.getCode());
+        }
+        UserExample example = new UserExample();
+        example.createCriteria().andUsernameEqualTo(user.getUsername());
+        if (userMapper.countByExample(example) > 0) {
+            throw new HospitalException(100, "用户名重复");
+        }
+        //增加医生的预约记录
+        if (UserType.DOCTOR.getCode().equals(user.getType())) {
+            List<Date> next7Days = DateUtils.getNext7Days();
+            for (Date next7Day : next7Days) {
+                Schedule schedule = new Schedule();
+                schedule.setId(IdUtil.getStringId());
+                schedule.setDoctorId(user.getId());
+                schedule.setScheduleDate(next7Day);
+                schedule.setTotalQuota(20);
+                scheduleMapper.insert(schedule);
+            }
         }
         userMapper.insert(user);
     }
 
     @Override
     public void edit(User user) {
-        userMapper.updateByPrimaryKeySelective(user);
+        UserExample example = new UserExample();
+        example.createCriteria().andUsernameEqualTo(user.getUsername());
+        if (userMapper.countByExample(example) < 0) {
+            userMapper.updateByPrimaryKeySelective(user);
+        }
     }
 
     @Override
@@ -95,9 +123,9 @@ public class UserServiceImpl implements UserService {
         criteria.andUsernameEqualTo(retrievePasswordDto.getUserName());
         criteria.andTelphoneEqualTo(retrievePasswordDto.getMobile());
         List<User> userList = userMapper.selectByExample(userExample);
-        if(CollectionUtils.isEmpty(userList)){
+        if (CollectionUtils.isEmpty(userList)) {
             throw new HospitalException(100, "无当前用户！");
-        }else{
+        } else {
             return userList.get(0);
         }
     }

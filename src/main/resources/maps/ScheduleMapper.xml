@@ -242,4 +242,8 @@
     </where>
     GROUP BY s.id
   </select>
+
+  <select id="selectLastOne" resultMap="BaseResultMap">
+    select * from schedule order by schedule_date desc limit 1
+  </select>
 </mapper>
