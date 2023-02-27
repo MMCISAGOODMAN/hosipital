@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @MapperScan("com.lrm.hospital.*.mapper")
 public class HospitalApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(HospitalApplication.class, args);
 	}
